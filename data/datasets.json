@@ -1,0 +1,11 @@
+{
+  "MOVE-II_unsupervised": {
+    "test_path": "./MOVE_II_EPS_BAT_TEMPS_FULL_DATA.csv",
+    "type ": "real"
+  },
+  "MOVE-II_semi-supervised": {
+    "test_path": "./MOVE_II_EPS_BAT_TEMPS_TEST_DATA.csv",
+    "train_path": "./MOVE_II_EPS_BAT_TEMPS_TRAIN_DATA.csv",
+    "type": "real"
+  }
+}

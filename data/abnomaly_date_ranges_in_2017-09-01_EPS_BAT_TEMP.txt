@@ -1,0 +1,16 @@
+#  Interpretation to the provided data
+- The data in this folder, more specifically the file `2017-09-01_EPS_BAT_TEMPS.csv` are the MOVE-II telemetry of the satellite's battery and EPS in the appropriate date range for the redmine Bug Ticket #3627.
+
+## Abnomaly date ranges:
+- abnomalies can be tracked in the data 
+  - from 28/9/2017  13:50 to 28/9/2017 19:00
+  - on 26/09/2017 10:49 (reset which leads to all values starting at undefined behavior until first values are queried in the system)
+  - 20/09/17 17:05 - 17:11
+  - 21/09/17 18:21 - 18:27
+  - 22/09/17 21:59 - 23:00
+  - 02/09/2017 5:12 - 04/09/2017 10:56
+  - 05/09/2017 15:00 - 20:28
+  - 06/09/2017 6:30 - 11:16
+
+## Nominal Date ranges:
+everything else
