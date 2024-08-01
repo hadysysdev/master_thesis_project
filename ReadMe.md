@@ -8,7 +8,7 @@ This guide provides step-by-step instructions for setting up the project environ
 2. [Enviroment Setup](#enviroment-setup)
 3. [Configuration](#configuration)
 4. [Running NoteBooks](#running-notebooks)
-5. [Dataset Preparation (Optional)](#dataset-preparation)
+
 
 ## Prerequisites
 
@@ -77,9 +77,9 @@ jupyter notebook
 ```
 Open the jupyter url **http://localhost:8888/** and navigate to the cloned folder.
 
-### Details of the NoteBooks
+#### Details of the NoteBooks
 
-#### algorithms_evaluation
+##### algorithms_evaluation
  
 This notebook can be used to run the evaulation as presented in the thesis paper.
 
@@ -121,12 +121,13 @@ algorithms = [
     ),]
 ```
 
-#### experiment-report
+##### experiment-report
 
 This notebook can be used to visualize the report of the evaluation.
 
 This requires the folder where the evaluation report is located (this is created authomatically inside a folder called *result* in the parent directory by TimeEval if one is not given explicitly, the folder usualy have the following pattern "2024_07_04_20_27_46" )
 
 
+##### data_pre_proccing (optional)
 
-## Dataset Preparation
+This notebook can be used to stage the MOVE II data. 
