@@ -13,11 +13,49 @@ from sklearn.metrics import auc, roc_curve, precision_recall_curve
 from prts import ts_precision, ts_recall, ts_fscore
 
 
+def aggregate(df, aggregated: bool = True, short: bool = True):
+        # metric_names: List[str] = ['ROC_AUC', 'PR_AUC', 'RANGE_PR_AUC'],
+        keysNames = ["algo_training_type" ,"status", "ROC_AUC", "PR_AUC",
+                 "RANGE_PR_AUC", "train_main_time", "execute_main_time"]
+        if np.any(np.isin(df.status.unique(), [Status.ERROR, Status.TIMEOUT, Status.OOM])):
+            warnings.warn("The results contain errors which are filtered out for the final aggregation. "
+                             "To see all results, call .get_results(aggregated=False)")
+            df = df[df.status == Status.OK]
+
+        if short:
+            # time_names = ["train_main_time", "execute_main_time"]
+            group_names = ["algorithm", "collection", "hyper_params_id",
+                           "dataset", "status", "algo_training_type", "dataset_input_dimensionality"]
+        else:
+            # time_names = Times.result_keys()
+            group_names = ["algorithm", "collection", "dataset", "hyper_params_id"]
+        keys = [key for key in keysNames if key in df.columns]
+        grouped_results = df.groupby(group_names)
+        results: pd.DataFrame = grouped_results[keys].mean()
+
+        if short:
+            results = results.rename(columns=dict([(k, f"{k}_mean") for k in keys]))
+        else:
+            std_results = grouped_results.std()[keys]
+            results = results.join(std_results, lsuffix="_mean", rsuffix="_std")
+        results["repetitions"] = grouped_results["repetition"].count()
+        return results
+
+
 def load_results(results_path: Path) -> pd.DataFrame:
     res = pd.read_csv(results_path / "results.csv")
+    train_time_column_name= "execute_main_time"
+    execution_time_column_name= "execute_main_time"
+    if not res["algorithm"].is_unique:
+         res = aggregate(res)
+         res = res.reset_index()
+         train_time_column_name = "train_main_time_mean"
+         execution_time_column_name = "execute_main_time_mean"
+
+
     res["dataset_name"] = res["dataset"].str.split(".").str[0]
-    res["overall_time"] = res["execute_main_time"].fillna(
-        0) + res["train_main_time"].fillna(0)
+    res["overall_time"] = res[train_time_column_name].fillna(
+        0) + res[execution_time_column_name].fillna(0)
     res["algorithm-index"] = res.algorithm + "-" + res.index.astype(str)
     res = res.drop_duplicates()
     return res
